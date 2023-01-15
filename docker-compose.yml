@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  web:
+    container_name: logger_app
+    build:
+      context: ./app/
+    restart: always
+    command: ['python','app/app.py']
+    ports:
+      - 5000:5000
+    volumes:
+      - .:/usr/src/logger
+    depends_on:
+      - nginx
+
+  nginx:
+    container_name: logger_nginx
+    build:
+      context: ./nginx/
+    restart: always
+    volumes:
+      - .:/usr/src/logger
+      - ./logs:/var/log/nginx
+    ports:
+      - 80:80
